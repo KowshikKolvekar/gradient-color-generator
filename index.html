@@ -3,199 +3,242 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>3-Color Gradient Generator with Dark Mode & Download</title>
+  <title>3-Color Gradient Generator</title>
   <style>
     :root {
-      --primary-color: #006eff;
-      --bg-light: #f4f6f9;
-      --bg-dark: #1e1e2f;
+      --primary: #006eff;
+      --primary-dark: #004dbb;
+      --bg-light: #fefefe;
+      --bg-dark: #12121f;
       --text-light: #222;
       --text-dark: #ddd;
-      --card-bg-light: #fff;
-      --card-bg-dark: #2a2a3f;
-      --shadow-light: rgba(0, 0, 0, 0.1);
-      --shadow-dark: rgba(0, 0, 0, 0.6);
-      --button-bg-light: #006eff;
-      --button-bg-dark: #004bb5;
+      --card-bg-light: #ffffff;
+      --card-bg-dark: #1f1f2f;
+      --shadow-light: rgba(0, 0, 0, 0.08);
+      --shadow-dark: rgba(0, 0, 0, 0.7);
+      --button-bg-light: var(--primary);
+      --button-bg-dark: var(--primary-dark);
+      --transition-fast: 0.25s ease-in-out;
+    }
+
+    /* Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg-light);
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-light);
       color: var(--text-light);
-      transition: background-color 0.4s, color 0.4s;
+      transition: background-color var(--transition-fast), color var(--transition-fast);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 4rem;
+      position: relative;
+      padding-bottom: 4rem; /* space for footer */
     }
 
     body.dark {
-      background-color: var(--bg-dark);
+      background: var(--bg-dark);
       color: var(--text-dark);
     }
 
-    .header {
-      background-color: var(--primary-color);
-      color: white;
-      text-align: center;
-      padding: 18px 20px;
-      font-size: 1.6rem;
+    header {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
       user-select: none;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    header span.emoji {
+      font-size: 2rem;
+      line-height: 1;
     }
 
     .container {
-      max-width: 1000px;
-      margin: 30px auto 60px;
-      padding: 20px 25px 40px;
       background: var(--card-bg-light);
-      border-radius: 12px;
-      box-shadow: 0 4px 15px var(--shadow-light);
-      transition: background-color 0.4s, box-shadow 0.4s;
+      padding: 2rem 2.5rem;
+      border-radius: 1rem;
+      width: 100%;
+      max-width: 800px;
+      box-shadow: 0 10px 30px var(--shadow-light);
+      transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
     }
 
     body.dark .container {
       background: var(--card-bg-dark);
-      box-shadow: 0 4px 15px var(--shadow-dark);
+      box-shadow: 0 10px 30px var(--shadow-dark);
     }
 
-    .form-group {
+    .color-picker-group {
       display: flex;
       justify-content: space-between;
-      gap: 15px;
-      margin-bottom: 30px;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
     }
 
     input[type="color"] {
-      width: 100%;
-      height: 50px;
+      flex: 1;
       border: none;
-      border-radius: 8px;
+      height: 56px;
+      border-radius: 14px;
       cursor: pointer;
-      transition: filter 0.3s;
+      transition: filter 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.07);
+      -webkit-appearance: none;
+    }
+    input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+      border-radius: 14px;
+    }
+    input[type="color"]::-webkit-color-swatch {
+      border-radius: 14px;
     }
 
     input[type="color"]:hover {
       filter: brightness(1.1);
     }
 
-    button {
-      background-color: var(--button-bg-light);
-      color: white;
+    button#generateBtn {
+      background: var(--button-bg-light);
       border: none;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 1rem;
+      color: white;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 0.8rem 0;
+      width: 100%;
+      border-radius: 14px;
       cursor: pointer;
+      box-shadow: 0 6px 14px rgba(0, 110, 255, 0.45);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      margin-bottom: 2rem;
       user-select: none;
-      transition: background-color 0.3s;
-      margin-bottom: 20px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
     }
-
-    button:hover {
-      background-color: var(--button-bg-dark);
+    button#generateBtn:hover {
+      background: var(--button-bg-dark);
+      box-shadow: 0 8px 20px rgba(0, 75, 187, 0.6);
     }
-
-    body.dark button {
-      background-color: var(--button-bg-dark);
+    body.dark button#generateBtn {
+      background: var(--button-bg-dark);
+      box-shadow: 0 6px 14px rgba(0, 75, 187, 0.45);
     }
-    body.dark button:hover {
-      background-color: #003d91;
+    body.dark button#generateBtn:hover {
+      background: #003a88;
+      box-shadow: 0 8px 20px rgba(0, 50, 120, 0.6);
     }
 
     #gradients {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
+      gap: 1.5rem;
     }
 
     .gradient-box {
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #ccc;
       position: relative;
       height: 160px;
+      border-radius: 1rem;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+      color: #111;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      color: #222;
-      font-family: monospace;
-      font-size: 0.85rem;
-      padding: 10px;
-      box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
-      transition: border-color 0.3s, color 0.3s;
+      padding: 1rem 1.2rem;
+      font-family: 'Fira Mono', monospace;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
       user-select: text;
+      cursor: default;
     }
 
     body.dark .gradient-box {
-      border-color: #444;
-      color: #eee;
-      box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+      color: #ddd;
+      box-shadow: inset 0 0 25px rgba(0,0,0,0.6);
     }
 
     .gradient-code {
-      background: rgba(255 255 255 / 0.8);
-      border-radius: 6px;
-      padding: 6px 8px;
-      margin-bottom: 8px;
-      overflow-wrap: anywhere;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      transition: background 0.3s;
-      user-select: text;
+      background: rgba(255 255 255 / 0.85);
+      border-radius: 0.6rem;
+      padding: 0.5rem 0.8rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      margin-bottom: 0.8rem;
+      user-select: all;
+      transition: background-color 0.3s ease;
     }
-
     body.dark .gradient-code {
-      background: rgba(0 0 0 / 0.6);
-      box-shadow: 0 1px 3px rgba(255,255,255,0.1);
+      background: rgba(30 30 47 / 0.9);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
     }
 
     .buttons-row {
       display: flex;
-      gap: 10px;
+      gap: 0.8rem;
       justify-content: flex-end;
     }
 
     .copy-btn, .download-btn {
-      background: rgba(255 255 255 / 0.85);
+      background: rgba(255 255 255 / 0.9);
       border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
+      padding: 0.45rem 1rem;
+      border-radius: 0.7rem;
       font-size: 0.85rem;
       cursor: pointer;
-      transition: background-color 0.2s;
+      color: var(--primary);
+      font-weight: 600;
+      box-shadow: 0 2px 7px rgba(0,110,255,0.25);
+      transition: background-color 0.2s ease, box-shadow 0.3s ease;
       user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
     }
 
     .copy-btn:hover, .download-btn:hover {
       background: rgba(255 255 255 / 1);
+      box-shadow: 0 4px 14px rgba(0,110,255,0.45);
     }
 
     body.dark .copy-btn, body.dark .download-btn {
-      background: rgba(0 0 0 / 0.6);
-      color: #eee;
+      background: rgba(30 30 47 / 0.9);
+      color: var(--primary);
+      box-shadow: 0 2px 7px rgba(0,75,187,0.4);
     }
     body.dark .copy-btn:hover, body.dark .download-btn:hover {
-      background: rgba(0 0 0 / 0.8);
+      background: rgba(30 30 47 / 1);
+      box-shadow: 0 4px 14px rgba(0,75,187,0.6);
     }
 
     #darkToggle {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: var(--primary-color);
+      bottom: 64px;
+      right: 24px;
+      background: var(--primary);
       border: none;
       color: white;
-      padding: 12px 18px;
+      padding: 14px 22px;
       border-radius: 30px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       user-select: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-      transition: background-color 0.3s;
+      box-shadow: 0 8px 22px rgba(0,110,255,0.4);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
       z-index: 1000;
+      font-size: 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
     }
     #darkToggle:hover {
-      background-color: #004dbb;
+      background-color: var(--primary-dark);
+      box-shadow: 0 10px 28px rgba(0,75,187,0.6);
     }
 
     /* Tooltip */
@@ -206,79 +249,101 @@
 
     .tooltip .tooltiptext {
       visibility: hidden;
-      width: 120px;
-      background-color: var(--primary-color);
+      width: 130px;
+      background-color: var(--primary);
       color: #fff;
       text-align: center;
       border-radius: 6px;
-      padding: 6px;
+      padding: 6px 8px;
       position: absolute;
-      z-index: 1;
-      bottom: 125%;
+      z-index: 10;
+      bottom: 135%;
       left: 50%;
-      margin-left: -60px;
+      transform: translateX(-50%);
       opacity: 0;
-      transition: opacity 0.3s;
+      transition: opacity 0.3s ease;
       font-size: 0.8rem;
       pointer-events: none;
       user-select: none;
+      font-weight: 600;
     }
 
     .tooltip:hover .tooltiptext {
       visibility: visible;
       opacity: 1;
+      pointer-events: auto;
     }
 
-    @media(max-width: 500px) {
-      .form-group {
-        flex-direction: column;
-      }
+    /* Footer */
+    footer {
+      position: fixed;
+      bottom: 12px;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      user-select: none;
+      font-weight: 500;
+      letter-spacing: 0.03em;
     }
+
+    body.dark footer {
+      color: #aaa;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
   </style>
 </head>
 <body>
+  <header>
+    <span class="emoji" aria-hidden="true">🎨</span>
+    3-Color Gradient Generator
+  </header>
 
-  <div class="header">🎨 3-Color Gradient Generator</div>
+  <main class="container" role="main">
+    <section class="color-picker-group" aria-label="Select three colors for the gradient">
+      <input type="color" id="color1" value="#00aaff" aria-label="First color" />
+      <input type="color" id="color2" value="#ff00aa" aria-label="Second color" />
+      <input type="color" id="color3" value="#ffaa00" aria-label="Third color" />
+    </section>
 
-  <div class="container">
-    <div class="form-group" aria-label="Color selectors">
-      <input type="color" id="color1" value="#ff6b6b" aria-label="First color picker" />
-      <input type="color" id="color2" value="#feca57" aria-label="Second color picker" />
-      <input type="color" id="color3" value="#48dbfb" aria-label="Third color picker" />
-    </div>
+    <button id="generateBtn" aria-describedby="generateDesc" aria-label="Generate gradients">
+      Generate Gradients
+    </button>
+    <p id="generateDesc" class="sr-only">Click to generate gradient variations with the selected colors.</p>
 
-    <button id="generateBtn">Generate Gradients</button>
-
-    <h3>Gradient Results:</h3>
-    <div id="gradients" aria-live="polite" aria-relevant="additions"></div>
-  </div>
+    <section id="gradients" aria-live="polite" aria-atomic="true" aria-relevant="additions"></section>
+  </main>
 
   <button id="darkToggle" aria-pressed="false" aria-label="Toggle dark mode">🌙 Dark Mode</button>
 
+  <footer>
+    Built by <a href="https://github.com/KowshikKolvekar" target="_blank" rel="noopener noreferrer">Kowshik</a> with ❤️
+  </footer>
+
   <script>
+    const generateBtn = document.getElementById('generateBtn');
+    const gradientsContainer = document.getElementById('gradients');
     const color1 = document.getElementById('color1');
     const color2 = document.getElementById('color2');
     const color3 = document.getElementById('color3');
-    const gradientsContainer = document.getElementById('gradients');
-    const generateBtn = document.getElementById('generateBtn');
     const darkToggle = document.getElementById('darkToggle');
     const body = document.body;
 
     const directions = ['to right', 'to bottom', '45deg', '135deg', 'to top right', 'to bottom left'];
-    const variations = [
-      [color1.value, color2.value, color3.value],
-      [color1.value, color3.value, color2.value],
-      [color2.value, color1.value, color3.value],
-      [color2.value, color3.value, color1.value],
-      [color3.value, color1.value, color2.value],
-      [color3.value, color2.value, color1.value]
-    ];
 
     function updateVariations() {
       return [
         [color1.value, color2.value, color3.value],
-        [color1.value, color3.value, color2.value],
-        [color2.value, color1.value, color3.value],
         [color2.value, color3.value, color1.value],
         [color3.value, color1.value, color2.value],
         [color3.value, color2.value, color1.value]
@@ -348,25 +413,20 @@
     }
 
     function createGradientImage(css, width, height) {
-      // Create canvas
       const canvas = document.createElement('canvas');
       canvas.width = width;
       canvas.height = height;
       const ctx = canvas.getContext('2d');
 
-      // Create gradient stops from the css string (basic parsing)
-      // We'll parse the 3 colors from linear-gradient(...) format.
       const matches = css.match(/\(([^)]+)\)/);
       if (!matches) return alert('Could not parse colors for image generation.');
 
-      // Extract direction and colors
       const parts = matches[1].split(',');
       if (parts.length < 4) return alert('Unexpected gradient format.');
 
       const direction = parts[0].trim();
       const colorStops = parts.slice(1).map(c => c.trim());
 
-      // Compute gradient start/end points for canvas based on direction
       let x0, y0, x1, y1;
 
       switch (direction) {
@@ -395,14 +455,11 @@
           x1 = 0; y1 = height;
           break;
         default:
-          // Default to left to right
           x0 = 0; y0 = 0;
           x1 = width; y1 = 0;
       }
 
       const gradient = ctx.createLinearGradient(x0, y0, x1, y1);
-
-      // Distribute color stops evenly
       colorStops.forEach((color, i) => {
         gradient.addColorStop(i / (colorStops.length - 1), color);
       });
@@ -410,7 +467,6 @@
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
 
-      // Download image
       const link = document.createElement('a');
       link.download = 'gradient.png';
       link.href = canvas.toDataURL('image/png');
@@ -426,9 +482,7 @@
       darkToggle.setAttribute('aria-pressed', isDark);
     };
 
-    // Generate gradients on page load
     window.onload = generateGradients;
   </script>
-
 </body>
 </html>
