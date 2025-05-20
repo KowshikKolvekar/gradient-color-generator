@@ -21,14 +21,11 @@
       --transition-fast: 0.25s ease-in-out;
     }
 
-    /* Reset */
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
+    *, *::before, *::after { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif;
       background: var(--bg-light);
       color: var(--text-light);
       transition: background-color var(--transition-fast), color var(--transition-fast);
@@ -38,7 +35,6 @@
       align-items: center;
       padding: 2rem 1rem 4rem;
       position: relative;
-      padding-bottom: 4rem; /* space for footer */
     }
 
     body.dark {
@@ -50,7 +46,6 @@
       font-size: 1.75rem;
       font-weight: 700;
       margin-bottom: 2rem;
-      user-select: none;
       color: var(--primary);
       display: flex;
       align-items: center;
@@ -84,26 +79,31 @@
       margin-bottom: 2.5rem;
     }
 
-    input[type="color"] {
+    .color-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       flex: 1;
+    }
+
+    input[type="color"] {
       border: none;
       height: 56px;
+      width: 100%;
       border-radius: 14px;
       cursor: pointer;
-      transition: filter 0.3s ease;
       box-shadow: 0 4px 10px rgba(0,0,0,0.07);
       -webkit-appearance: none;
     }
-    input[type="color"]::-webkit-color-swatch-wrapper {
-      padding: 0;
-      border-radius: 14px;
-    }
-    input[type="color"]::-webkit-color-swatch {
-      border-radius: 14px;
-    }
 
-    input[type="color"]:hover {
-      filter: brightness(1.1);
+    input[type="text"] {
+      margin-top: 0.5rem;
+      width: 100%;
+      padding: 0.3rem 0.6rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 0.9rem;
+      text-align: center;
     }
 
     button#generateBtn {
@@ -117,21 +117,15 @@
       border-radius: 14px;
       cursor: pointer;
       box-shadow: 0 6px 14px rgba(0, 110, 255, 0.45);
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
       margin-bottom: 2rem;
-      user-select: none;
     }
+
     button#generateBtn:hover {
       background: var(--button-bg-dark);
-      box-shadow: 0 8px 20px rgba(0, 75, 187, 0.6);
     }
+
     body.dark button#generateBtn {
       background: var(--button-bg-dark);
-      box-shadow: 0 6px 14px rgba(0, 75, 187, 0.45);
-    }
-    body.dark button#generateBtn:hover {
-      background: #003a88;
-      box-shadow: 0 8px 20px rgba(0, 50, 120, 0.6);
     }
 
     #gradients {
@@ -144,75 +138,50 @@
       position: relative;
       height: 160px;
       border-radius: 1rem;
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
-      color: #111;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
       padding: 1rem 1.2rem;
       font-family: 'Fira Mono', monospace;
       font-size: 0.9rem;
-      transition: color 0.3s ease;
-      user-select: text;
-      cursor: default;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: #111;
     }
 
     body.dark .gradient-box {
       color: #ddd;
-      box-shadow: inset 0 0 25px rgba(0,0,0,0.6);
     }
 
     .gradient-code {
-      background: rgba(255 255 255 / 0.85);
+      background: rgba(255,255,255,0.85);
       border-radius: 0.6rem;
       padding: 0.5rem 0.8rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-      margin-bottom: 0.8rem;
-      user-select: all;
-      transition: background-color 0.3s ease;
+      margin-bottom: 0.6rem;
     }
+
     body.dark .gradient-code {
-      background: rgba(30 30 47 / 0.9);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      background: rgba(30,30,47,0.9);
     }
 
     .buttons-row {
       display: flex;
-      gap: 0.8rem;
-      justify-content: flex-end;
+      gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     .copy-btn, .download-btn {
-      background: rgba(255 255 255 / 0.9);
+      background: rgba(255,255,255,0.9);
       border: none;
-      padding: 0.45rem 1rem;
-      border-radius: 0.7rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.5rem;
       font-size: 0.85rem;
       cursor: pointer;
       color: var(--primary);
       font-weight: 600;
-      box-shadow: 0 2px 7px rgba(0,110,255,0.25);
-      transition: background-color 0.2s ease, box-shadow 0.3s ease;
-      user-select: none;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      white-space: nowrap;
-    }
-
-    .copy-btn:hover, .download-btn:hover {
-      background: rgba(255 255 255 / 1);
-      box-shadow: 0 4px 14px rgba(0,110,255,0.45);
     }
 
     body.dark .copy-btn, body.dark .download-btn {
-      background: rgba(30 30 47 / 0.9);
+      background: rgba(30,30,47,0.9);
       color: var(--primary);
-      box-shadow: 0 2px 7px rgba(0,75,187,0.4);
-    }
-    body.dark .copy-btn:hover, body.dark .download-btn:hover {
-      background: rgba(30 30 47 / 1);
-      box-shadow: 0 4px 14px rgba(0,75,187,0.6);
     }
 
     #darkToggle {
@@ -220,61 +189,16 @@
       bottom: 64px;
       right: 24px;
       background: var(--primary);
-      border: none;
       color: white;
       padding: 14px 22px;
       border-radius: 30px;
       font-weight: 700;
       cursor: pointer;
-      user-select: none;
       box-shadow: 0 8px 22px rgba(0,110,255,0.4);
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
       z-index: 1000;
       font-size: 1.15rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      user-select: none;
-    }
-    #darkToggle:hover {
-      background-color: var(--primary-dark);
-      box-shadow: 0 10px 28px rgba(0,75,187,0.6);
     }
 
-    /* Tooltip */
-    .tooltip {
-      position: relative;
-      display: inline-block;
-    }
-
-    .tooltip .tooltiptext {
-      visibility: hidden;
-      width: 130px;
-      background-color: var(--primary);
-      color: #fff;
-      text-align: center;
-      border-radius: 6px;
-      padding: 6px 8px;
-      position: absolute;
-      z-index: 10;
-      bottom: 135%;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      font-size: 0.8rem;
-      pointer-events: none;
-      user-select: none;
-      font-weight: 600;
-    }
-
-    .tooltip:hover .tooltiptext {
-      visibility: visible;
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    /* Footer */
     footer {
       position: fixed;
       bottom: 12px;
@@ -282,9 +206,6 @@
       text-align: center;
       font-size: 0.9rem;
       color: #666;
-      user-select: none;
-      font-weight: 500;
-      letter-spacing: 0.03em;
     }
 
     body.dark footer {
@@ -296,117 +217,124 @@
       text-decoration: none;
       font-weight: 700;
     }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
   </style>
 </head>
 <body>
   <header>
-    <span class="emoji" aria-hidden="true">🎨</span>
+    <span class="emoji">🎨</span>
     3-Color Gradient Generator
   </header>
 
-  <main class="container" role="main">
-    <section class="color-picker-group" aria-label="Select three colors for the gradient">
-      <input type="color" id="color1" value="#00aaff" aria-label="First color" />
-      <input type="color" id="color2" value="#ff00aa" aria-label="Second color" />
-      <input type="color" id="color3" value="#ffaa00" aria-label="Third color" />
+  <main class="container">
+    <section class="color-picker-group">
+      <div class="color-wrapper">
+        <input type="color" id="color1" value="#00aaff" />
+        <input type="text" id="hex1" value="#00aaff" maxlength="7" />
+      </div>
+      <div class="color-wrapper">
+        <input type="color" id="color2" value="#ff00aa" />
+        <input type="text" id="hex2" value="#ff00aa" maxlength="7" />
+      </div>
+      <div class="color-wrapper">
+        <input type="color" id="color3" value="#ffaa00" />
+        <input type="text" id="hex3" value="#ffaa00" maxlength="7" />
+      </div>
     </section>
 
-    <button id="generateBtn" aria-describedby="generateDesc" aria-label="Generate gradients">
-      Generate Gradients
-    </button>
-    <p id="generateDesc" class="sr-only">Click to generate gradient variations with the selected colors.</p>
-
-    <section id="gradients" aria-live="polite" aria-atomic="true" aria-relevant="additions"></section>
+    <button id="generateBtn">Generate Gradients</button>
+    <section id="gradients"></section>
   </main>
 
-  <button id="darkToggle" aria-pressed="false" aria-label="Toggle dark mode">🌙 Dark Mode</button>
+  <button id="darkToggle">🌙 Dark Mode</button>
 
   <footer>
-    Built by <a href="https://github.com/KowshikKolvekar" target="_blank" rel="noopener noreferrer">Kowshik</a> with ❤️ #CodeWithKowshik
+    Built by <a href="https://github.com/KowshikKolvekar" target="_blank">Kowshik</a> with ❤️ #CodeWithKowshik
   </footer>
 
   <script>
     const generateBtn = document.getElementById('generateBtn');
     const gradientsContainer = document.getElementById('gradients');
-    const color1 = document.getElementById('color1');
-    const color2 = document.getElementById('color2');
-    const color3 = document.getElementById('color3');
     const darkToggle = document.getElementById('darkToggle');
     const body = document.body;
 
+    const colorInputs = [
+      { color: document.getElementById('color1'), hex: document.getElementById('hex1') },
+      { color: document.getElementById('color2'), hex: document.getElementById('hex2') },
+      { color: document.getElementById('color3'), hex: document.getElementById('hex3') }
+    ];
+
     const directions = ['to right', 'to bottom', '45deg', '135deg', 'to top right', 'to bottom left'];
 
-    function updateVariations() {
-      return [
-        [color1.value, color2.value, color3.value],
-        [color2.value, color3.value, color1.value],
-        [color3.value, color1.value, color2.value],
-        [color3.value, color2.value, color1.value]
-      ];
+    // Sync input boxes with color pickers
+    colorInputs.forEach(({ color, hex }) => {
+      color.addEventListener('input', () => hex.value = color.value);
+      hex.addEventListener('input', () => {
+        if (/^#([0-9A-Fa-f]{6})$/.test(hex.value)) color.value = hex.value;
+      });
+    });
+
+    function getColors() {
+      return colorInputs.map(ci => ci.color.value);
+    }
+
+    function getColorHexString(colors) {
+      return colors.join(', ');
     }
 
     function generateGradients() {
-      const colorsVariations = updateVariations();
+      const [c1, c2, c3] = getColors();
+      const variations = [
+        [c1, c2, c3],
+        [c2, c3, c1],
+        [c3, c1, c2],
+        [c3, c2, c1]
+      ];
+
       gradientsContainer.innerHTML = '';
 
-      colorsVariations.forEach(colors => {
+      variations.forEach(colors => {
         directions.forEach(direction => {
           const css = `linear-gradient(${direction}, ${colors[0]}, ${colors[1]}, ${colors[2]})`;
           const box = document.createElement('div');
           box.className = 'gradient-box';
           box.style.background = css;
 
-          // CSS code block
           const codeBlock = document.createElement('div');
           codeBlock.className = 'gradient-code';
           codeBlock.textContent = `background: ${css};`;
           box.appendChild(codeBlock);
 
-          // Buttons container
           const btnRow = document.createElement('div');
           btnRow.className = 'buttons-row';
 
-          // Copy CSS button
-          const copyBtn = document.createElement('button');
-          copyBtn.className = 'copy-btn tooltip';
-          copyBtn.textContent = 'Copy CSS';
-          const tooltipSpan = document.createElement('span');
-          tooltipSpan.className = 'tooltiptext';
-          tooltipSpan.textContent = 'Click to copy CSS';
-          copyBtn.appendChild(tooltipSpan);
-
-          copyBtn.onclick = () => {
-            navigator.clipboard.writeText(`background: ${css};`).then(() => {
-              copyBtn.textContent = 'Copied!';
-              setTimeout(() => {
-                copyBtn.textContent = 'Copy CSS';
-                copyBtn.appendChild(tooltipSpan);
-              }, 1500);
-            });
+          const copyCss = document.createElement('button');
+          copyCss.className = 'copy-btn';
+          copyCss.textContent = 'Copy CSS';
+          copyCss.onclick = () => {
+            navigator.clipboard.writeText(`background: ${css};`);
+            copyCss.textContent = 'Copied!';
+            setTimeout(() => copyCss.textContent = 'Copy CSS', 1200);
           };
 
-          // Download PNG button
+          const copyHex = document.createElement('button');
+          copyHex.className = 'copy-btn';
+          copyHex.textContent = 'Copy Hex';
+          copyHex.onclick = () => {
+            navigator.clipboard.writeText(getColorHexString(colors));
+            copyHex.textContent = 'Copied!';
+            setTimeout(() => copyHex.textContent = 'Copy Hex', 1200);
+          };
+
           const downloadBtn = document.createElement('button');
-          downloadBtn.className = 'download-btn tooltip';
+          downloadBtn.className = 'download-btn';
           downloadBtn.textContent = 'Download PNG';
-          const downloadTooltip = document.createElement('span');
-          downloadTooltip.className = 'tooltiptext';
-          downloadTooltip.textContent = 'Download gradient as image';
-          downloadBtn.appendChild(downloadTooltip);
+          downloadBtn.onclick = () => createGradientImage(css, 400, 150);
 
-          downloadBtn.onclick = () => {
-            createGradientImage(css, 400, 150);
-          };
-
-          btnRow.appendChild(copyBtn);
+          btnRow.appendChild(copyCss);
+          btnRow.appendChild(copyHex);
           btnRow.appendChild(downloadBtn);
-          box.appendChild(btnRow);
 
+          box.appendChild(btnRow);
           gradientsContainer.appendChild(box);
         });
       });
@@ -419,51 +347,21 @@
       const ctx = canvas.getContext('2d');
 
       const matches = css.match(/\(([^)]+)\)/);
-      if (!matches) return alert('Could not parse colors for image generation.');
+      if (!matches) return;
 
       const parts = matches[1].split(',');
-      if (parts.length < 4) return alert('Unexpected gradient format.');
-
       const direction = parts[0].trim();
-      const colorStops = parts.slice(1).map(c => c.trim());
+      const stops = parts.slice(1).map(c => c.trim());
 
-      let x0, y0, x1, y1;
-
-      switch (direction) {
-        case 'to right':
-          x0 = 0; y0 = 0;
-          x1 = width; y1 = 0;
-          break;
-        case 'to bottom':
-          x0 = 0; y0 = 0;
-          x1 = 0; y1 = height;
-          break;
-        case '45deg':
-          x0 = 0; y0 = height;
-          x1 = width; y1 = 0;
-          break;
-        case '135deg':
-          x0 = 0; y0 = 0;
-          x1 = width; y1 = height;
-          break;
-        case 'to top right':
-          x0 = 0; y0 = height;
-          x1 = width; y1 = 0;
-          break;
-        case 'to bottom left':
-          x0 = width; y0 = 0;
-          x1 = 0; y1 = height;
-          break;
-        default:
-          x0 = 0; y0 = 0;
-          x1 = width; y1 = 0;
-      }
+      let x0 = 0, y0 = 0, x1 = width, y1 = 0;
+      if (direction === 'to bottom') x1 = 0, y1 = height;
+      if (direction === '45deg') x1 = width, y0 = height, y1 = 0;
+      if (direction === '135deg') x1 = width, y1 = height;
+      if (direction === 'to top right') x1 = width, y0 = height, y1 = 0;
+      if (direction === 'to bottom left') x0 = width, y1 = height;
 
       const gradient = ctx.createLinearGradient(x0, y0, x1, y1);
-      colorStops.forEach((color, i) => {
-        gradient.addColorStop(i / (colorStops.length - 1), color);
-      });
-
+      stops.forEach((color, i) => gradient.addColorStop(i / (stops.length - 1), color));
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
 
@@ -473,15 +371,12 @@
       link.click();
     }
 
-    generateBtn.onclick = generateGradients;
-
     darkToggle.onclick = () => {
       body.classList.toggle('dark');
-      const isDark = body.classList.contains('dark');
-      darkToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
-      darkToggle.setAttribute('aria-pressed', isDark);
+      darkToggle.textContent = body.classList.contains('dark') ? '☀️ Light Mode' : '🌙 Dark Mode';
     };
 
+    generateBtn.onclick = generateGradients;
     window.onload = generateGradients;
   </script>
 </body>
