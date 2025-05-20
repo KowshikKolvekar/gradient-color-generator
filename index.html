@@ -2,129 +2,432 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gradient Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>3-Color Gradient Generator with Dark Mode & Download</title>
   <style>
+    :root {
+      --primary-color: #006eff;
+      --bg-light: #f4f6f9;
+      --bg-dark: #1e1e2f;
+      --text-light: #222;
+      --text-dark: #ddd;
+      --card-bg-light: #fff;
+      --card-bg-dark: #2a2a3f;
+      --shadow-light: rgba(0, 0, 0, 0.1);
+      --shadow-dark: rgba(0, 0, 0, 0.6);
+      --button-bg-light: #006eff;
+      --button-bg-dark: #004bb5;
+    }
+
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f4f6f9;
       margin: 0;
-      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: background-color 0.4s, color 0.4s;
+    }
+
+    body.dark {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
     }
 
     .header {
-      background-color: #006eff;
+      background-color: var(--primary-color);
       color: white;
-      padding: 20px;
       text-align: center;
+      padding: 18px 20px;
       font-size: 1.6rem;
+      user-select: none;
     }
 
     .container {
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 20px;
-      background: white;
+      max-width: 1000px;
+      margin: 30px auto 60px;
+      padding: 20px 25px 40px;
+      background: var(--card-bg-light);
       border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 15px var(--shadow-light);
+      transition: background-color 0.4s, box-shadow 0.4s;
+    }
+
+    body.dark .container {
+      background: var(--card-bg-dark);
+      box-shadow: 0 4px 15px var(--shadow-dark);
     }
 
     .form-group {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 20px;
-      gap: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 8px;
+      gap: 15px;
+      margin-bottom: 30px;
     }
 
     input[type="color"] {
       width: 100%;
       height: 50px;
       border: none;
+      border-radius: 8px;
       cursor: pointer;
-      border-radius: 8px;
+      transition: filter 0.3s;
     }
 
-    #gradientPreview {
-      height: 200px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      border: 1px solid #ddd;
-    }
-
-    #cssCode {
-      background-color: #f0f3f8;
-      padding: 12px;
-      border-radius: 8px;
-      font-family: monospace;
-      white-space: pre-wrap;
-      border: 1px solid #ccc;
-      margin-bottom: 10px;
+    input[type="color"]:hover {
+      filter: brightness(1.1);
     }
 
     button {
-      background-color: #006eff;
+      background-color: var(--button-bg-light);
       color: white;
       border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
       cursor: pointer;
-      font-size: 15px;
+      user-select: none;
+      transition: background-color 0.3s;
+      margin-bottom: 20px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     button:hover {
-      background-color: #0056c2;
+      background-color: var(--button-bg-dark);
+    }
+
+    body.dark button {
+      background-color: var(--button-bg-dark);
+    }
+    body.dark button:hover {
+      background-color: #003d91;
+    }
+
+    #gradients {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .gradient-box {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #ccc;
+      position: relative;
+      height: 160px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: #222;
+      font-family: monospace;
+      font-size: 0.85rem;
+      padding: 10px;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+      transition: border-color 0.3s, color 0.3s;
+      user-select: text;
+    }
+
+    body.dark .gradient-box {
+      border-color: #444;
+      color: #eee;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+    }
+
+    .gradient-code {
+      background: rgba(255 255 255 / 0.8);
+      border-radius: 6px;
+      padding: 6px 8px;
+      margin-bottom: 8px;
+      overflow-wrap: anywhere;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: background 0.3s;
+      user-select: text;
+    }
+
+    body.dark .gradient-code {
+      background: rgba(0 0 0 / 0.6);
+      box-shadow: 0 1px 3px rgba(255,255,255,0.1);
+    }
+
+    .buttons-row {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .copy-btn, .download-btn {
+      background: rgba(255 255 255 / 0.85);
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      user-select: none;
+    }
+
+    .copy-btn:hover, .download-btn:hover {
+      background: rgba(255 255 255 / 1);
+    }
+
+    body.dark .copy-btn, body.dark .download-btn {
+      background: rgba(0 0 0 / 0.6);
+      color: #eee;
+    }
+    body.dark .copy-btn:hover, body.dark .download-btn:hover {
+      background: rgba(0 0 0 / 0.8);
+    }
+
+    #darkToggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--primary-color);
+      border: none;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      transition: background-color 0.3s;
+      z-index: 1000;
+    }
+    #darkToggle:hover {
+      background-color: #004dbb;
+    }
+
+    /* Tooltip */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 120px;
+      background-color: var(--primary-color);
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 6px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -60px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.8rem;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    @media(max-width: 500px) {
+      .form-group {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="header">🎨 Gradient Generator</div>
+  <div class="header">🎨 3-Color Gradient Generator</div>
 
   <div class="container">
-    <div class="form-group">
-      <div>
-        <label for="color1">Start Color</label>
-        <input type="color" id="color1" value="#87f4b5">
-      </div>
-      <div>
-        <label for="color2">End Color</label>
-        <input type="color" id="color2" value="#93cbf1">
-      </div>
+    <div class="form-group" aria-label="Color selectors">
+      <input type="color" id="color1" value="#ff6b6b" aria-label="First color picker" />
+      <input type="color" id="color2" value="#feca57" aria-label="Second color picker" />
+      <input type="color" id="color3" value="#48dbfb" aria-label="Third color picker" />
     </div>
 
-    <div id="gradientPreview"></div>
+    <button id="generateBtn">Generate Gradients</button>
 
-    <pre id="cssCode"></pre>
-    <button onclick="copyCSS()">Copy CSS</button>
+    <h3>Gradient Results:</h3>
+    <div id="gradients" aria-live="polite" aria-relevant="additions"></div>
   </div>
 
+  <button id="darkToggle" aria-pressed="false" aria-label="Toggle dark mode">🌙 Dark Mode</button>
+
   <script>
-    const color1 = document.getElementById("color1");
-    const color2 = document.getElementById("color2");
-    const preview = document.getElementById("gradientPreview");
-    const cssCode = document.getElementById("cssCode");
+    const color1 = document.getElementById('color1');
+    const color2 = document.getElementById('color2');
+    const color3 = document.getElementById('color3');
+    const gradientsContainer = document.getElementById('gradients');
+    const generateBtn = document.getElementById('generateBtn');
+    const darkToggle = document.getElementById('darkToggle');
+    const body = document.body;
 
-    function updateGradient() {
-      const gradient = `linear-gradient(90deg, ${color1.value}, ${color2.value})`;
-      preview.style.background = gradient;
-      cssCode.textContent = `background: ${gradient};`;
+    const directions = ['to right', 'to bottom', '45deg', '135deg', 'to top right', 'to bottom left'];
+    const variations = [
+      [color1.value, color2.value, color3.value],
+      [color1.value, color3.value, color2.value],
+      [color2.value, color1.value, color3.value],
+      [color2.value, color3.value, color1.value],
+      [color3.value, color1.value, color2.value],
+      [color3.value, color2.value, color1.value]
+    ];
+
+    function updateVariations() {
+      return [
+        [color1.value, color2.value, color3.value],
+        [color1.value, color3.value, color2.value],
+        [color2.value, color1.value, color3.value],
+        [color2.value, color3.value, color1.value],
+        [color3.value, color1.value, color2.value],
+        [color3.value, color2.value, color1.value]
+      ];
     }
 
-    function copyCSS() {
-      navigator.clipboard.writeText(cssCode.textContent);
-      alert("CSS copied to clipboard!");
+    function generateGradients() {
+      const colorsVariations = updateVariations();
+      gradientsContainer.innerHTML = '';
+
+      colorsVariations.forEach(colors => {
+        directions.forEach(direction => {
+          const css = `linear-gradient(${direction}, ${colors[0]}, ${colors[1]}, ${colors[2]})`;
+          const box = document.createElement('div');
+          box.className = 'gradient-box';
+          box.style.background = css;
+
+          // CSS code block
+          const codeBlock = document.createElement('div');
+          codeBlock.className = 'gradient-code';
+          codeBlock.textContent = `background: ${css};`;
+          box.appendChild(codeBlock);
+
+          // Buttons container
+          const btnRow = document.createElement('div');
+          btnRow.className = 'buttons-row';
+
+          // Copy CSS button
+          const copyBtn = document.createElement('button');
+          copyBtn.className = 'copy-btn tooltip';
+          copyBtn.textContent = 'Copy CSS';
+          const tooltipSpan = document.createElement('span');
+          tooltipSpan.className = 'tooltiptext';
+          tooltipSpan.textContent = 'Click to copy CSS';
+          copyBtn.appendChild(tooltipSpan);
+
+          copyBtn.onclick = () => {
+            navigator.clipboard.writeText(`background: ${css};`).then(() => {
+              copyBtn.textContent = 'Copied!';
+              setTimeout(() => {
+                copyBtn.textContent = 'Copy CSS';
+                copyBtn.appendChild(tooltipSpan);
+              }, 1500);
+            });
+          };
+
+          // Download PNG button
+          const downloadBtn = document.createElement('button');
+          downloadBtn.className = 'download-btn tooltip';
+          downloadBtn.textContent = 'Download PNG';
+          const downloadTooltip = document.createElement('span');
+          downloadTooltip.className = 'tooltiptext';
+          downloadTooltip.textContent = 'Download gradient as image';
+          downloadBtn.appendChild(downloadTooltip);
+
+          downloadBtn.onclick = () => {
+            createGradientImage(css, 400, 150);
+          };
+
+          btnRow.appendChild(copyBtn);
+          btnRow.appendChild(downloadBtn);
+          box.appendChild(btnRow);
+
+          gradientsContainer.appendChild(box);
+        });
+      });
     }
 
-    color1.addEventListener("input", updateGradient);
-    color2.addEventListener("input", updateGradient);
+    function createGradientImage(css, width, height) {
+      // Create canvas
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
 
-    window.onload = updateGradient;
+      // Create gradient stops from the css string (basic parsing)
+      // We'll parse the 3 colors from linear-gradient(...) format.
+      const matches = css.match(/\(([^)]+)\)/);
+      if (!matches) return alert('Could not parse colors for image generation.');
+
+      // Extract direction and colors
+      const parts = matches[1].split(',');
+      if (parts.length < 4) return alert('Unexpected gradient format.');
+
+      const direction = parts[0].trim();
+      const colorStops = parts.slice(1).map(c => c.trim());
+
+      // Compute gradient start/end points for canvas based on direction
+      let x0, y0, x1, y1;
+
+      switch (direction) {
+        case 'to right':
+          x0 = 0; y0 = 0;
+          x1 = width; y1 = 0;
+          break;
+        case 'to bottom':
+          x0 = 0; y0 = 0;
+          x1 = 0; y1 = height;
+          break;
+        case '45deg':
+          x0 = 0; y0 = height;
+          x1 = width; y1 = 0;
+          break;
+        case '135deg':
+          x0 = 0; y0 = 0;
+          x1 = width; y1 = height;
+          break;
+        case 'to top right':
+          x0 = 0; y0 = height;
+          x1 = width; y1 = 0;
+          break;
+        case 'to bottom left':
+          x0 = width; y0 = 0;
+          x1 = 0; y1 = height;
+          break;
+        default:
+          // Default to left to right
+          x0 = 0; y0 = 0;
+          x1 = width; y1 = 0;
+      }
+
+      const gradient = ctx.createLinearGradient(x0, y0, x1, y1);
+
+      // Distribute color stops evenly
+      colorStops.forEach((color, i) => {
+        gradient.addColorStop(i / (colorStops.length - 1), color);
+      });
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+
+      // Download image
+      const link = document.createElement('a');
+      link.download = 'gradient.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    generateBtn.onclick = generateGradients;
+
+    darkToggle.onclick = () => {
+      body.classList.toggle('dark');
+      const isDark = body.classList.contains('dark');
+      darkToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+      darkToggle.setAttribute('aria-pressed', isDark);
+    };
+
+    // Generate gradients on page load
+    window.onload = generateGradients;
   </script>
 
 </body>
