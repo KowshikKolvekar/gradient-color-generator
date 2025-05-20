@@ -2,487 +2,201 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>3-Color Gradient Generator</title>
+  <link rel="icon" href="https://login.salesforce.com/favicon.ico" />
   <style>
-    :root {
-      --primary: #006eff;
-      --primary-dark: #004dbb;
-      --bg-light: #fefefe;
-      --bg-dark: #12121f;
-      --text-light: #222;
-      --text-dark: #ddd;
-      --card-bg-light: #ffffff;
-      --card-bg-dark: #1f1f2f;
-      --shadow-light: rgba(0, 0, 0, 0.08);
-      --shadow-dark: rgba(0, 0, 0, 0.7);
-      --button-bg-light: var(--primary);
-      --button-bg-dark: var(--primary-dark);
-      --transition-fast: 0.25s ease-in-out;
-    }
-
-    /* Reset */
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
-
     body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--bg-light);
-      color: var(--text-light);
-      transition: background-color var(--transition-fast), color var(--transition-fast);
-      min-height: 100vh;
+      padding: 0;
+      background: linear-gradient(135deg, #e6f0fa, #ffffff);
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding: 2rem 1rem 4rem;
-      position: relative;
-      padding-bottom: 4rem; /* space for footer */
-    }
-
-    body.dark {
-      background: var(--bg-dark);
-      color: var(--text-dark);
+      min-height: 100vh;
     }
 
     header {
-      font-size: 1.75rem;
-      font-weight: 700;
-      margin-bottom: 2rem;
-      user-select: none;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      background: #00a1e0;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    header span.emoji {
-      font-size: 2rem;
-      line-height: 1;
+    header img {
+      height: 40px;
+      vertical-align: middle;
+      margin-right: 10px;
     }
 
-    .container {
-      background: var(--card-bg-light);
-      padding: 2rem 2.5rem;
-      border-radius: 1rem;
-      width: 100%;
+    h1 {
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 1.5rem;
+      margin: 0;
+    }
+
+    main {
+      flex-grow: 1;
+      padding: 2rem;
       max-width: 800px;
-      box-shadow: 0 10px 30px var(--shadow-light);
-      transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
-    }
-
-    body.dark .container {
-      background: var(--card-bg-dark);
-      box-shadow: 0 10px 30px var(--shadow-dark);
+      margin: auto;
     }
 
     .color-picker-group {
       display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-bottom: 2.5rem;
-    }
-
-    input[type="color"] {
-      flex: 1;
-      border: none;
-      height: 56px;
-      border-radius: 14px;
-      cursor: pointer;
-      transition: filter 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.07);
-      -webkit-appearance: none;
-    }
-    input[type="color"]::-webkit-color-swatch-wrapper {
-      padding: 0;
-      border-radius: 14px;
-    }
-    input[type="color"]::-webkit-color-swatch {
-      border-radius: 14px;
-    }
-
-    input[type="color"]:hover {
-      filter: brightness(1.1);
-    }
-
-    button#generateBtn {
-      background: var(--button-bg-light);
-      border: none;
-      color: white;
-      font-weight: 600;
-      font-size: 1.1rem;
-      padding: 0.8rem 0;
-      width: 100%;
-      border-radius: 14px;
-      cursor: pointer;
-      box-shadow: 0 6px 14px rgba(0, 110, 255, 0.45);
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-      margin-bottom: 2rem;
-      user-select: none;
-    }
-    button#generateBtn:hover {
-      background: var(--button-bg-dark);
-      box-shadow: 0 8px 20px rgba(0, 75, 187, 0.6);
-    }
-    body.dark button#generateBtn {
-      background: var(--button-bg-dark);
-      box-shadow: 0 6px 14px rgba(0, 75, 187, 0.45);
-    }
-    body.dark button#generateBtn:hover {
-      background: #003a88;
-      box-shadow: 0 8px 20px rgba(0, 50, 120, 0.6);
-    }
-
-    #gradients {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .gradient-box {
-      position: relative;
-      height: 160px;
-      border-radius: 1rem;
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
-      color: #111;
-      display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 1rem 1.2rem;
-      font-family: 'Fira Mono', monospace;
-      font-size: 0.9rem;
-      transition: color 0.3s ease;
-      user-select: text;
-      cursor: default;
+      gap: 1rem;
+      margin-bottom: 2rem;
     }
 
-    body.dark .gradient-box {
-      color: #ddd;
-      box-shadow: inset 0 0 25px rgba(0,0,0,0.6);
-    }
-
-    .gradient-code {
-      background: rgba(255 255 255 / 0.85);
-      border-radius: 0.6rem;
-      padding: 0.5rem 0.8rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-      margin-bottom: 0.8rem;
-      user-select: all;
-      transition: background-color 0.3s ease;
-    }
-    body.dark .gradient-code {
-      background: rgba(30 30 47 / 0.9);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-    }
-
-    .buttons-row {
-      display: flex;
-      gap: 0.8rem;
-      justify-content: flex-end;
-    }
-
-    .copy-btn, .download-btn {
-      background: rgba(255 255 255 / 0.9);
-      border: none;
-      padding: 0.45rem 1rem;
-      border-radius: 0.7rem;
-      font-size: 0.85rem;
-      cursor: pointer;
-      color: var(--primary);
-      font-weight: 600;
-      box-shadow: 0 2px 7px rgba(0,110,255,0.25);
-      transition: background-color 0.2s ease, box-shadow 0.3s ease;
-      user-select: none;
+    .color-input {
       display: flex;
       align-items: center;
-      gap: 0.4rem;
-      white-space: nowrap;
+      gap: 10px;
     }
 
-    .copy-btn:hover, .download-btn:hover {
-      background: rgba(255 255 255 / 1);
-      box-shadow: 0 4px 14px rgba(0,110,255,0.45);
-    }
-
-    body.dark .copy-btn, body.dark .download-btn {
-      background: rgba(30 30 47 / 0.9);
-      color: var(--primary);
-      box-shadow: 0 2px 7px rgba(0,75,187,0.4);
-    }
-    body.dark .copy-btn:hover, body.dark .download-btn:hover {
-      background: rgba(30 30 47 / 1);
-      box-shadow: 0 4px 14px rgba(0,75,187,0.6);
-    }
-
-    #darkToggle {
-      position: fixed;
-      bottom: 64px;
-      right: 24px;
-      background: var(--primary);
-      border: none;
-      color: white;
-      padding: 14px 22px;
-      border-radius: 30px;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-      box-shadow: 0 8px 22px rgba(0,110,255,0.4);
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-      z-index: 1000;
-      font-size: 1.15rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      user-select: none;
-    }
-    #darkToggle:hover {
-      background-color: var(--primary-dark);
-      box-shadow: 0 10px 28px rgba(0,75,187,0.6);
-    }
-
-    /* Tooltip */
-    .tooltip {
-      position: relative;
-      display: inline-block;
-    }
-
-    .tooltip .tooltiptext {
-      visibility: hidden;
-      width: 130px;
-      background-color: var(--primary);
-      color: #fff;
-      text-align: center;
+    .color-input input[type="text"] {
+      padding: 6px 10px;
+      font-size: 14px;
+      width: 100px;
+      border: 1px solid #ccc;
       border-radius: 6px;
-      padding: 6px 8px;
-      position: absolute;
-      z-index: 10;
-      bottom: 135%;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      font-size: 0.8rem;
-      pointer-events: none;
-      user-select: none;
-      font-weight: 600;
+      font-family: monospace;
     }
 
-    .tooltip:hover .tooltiptext {
-      visibility: visible;
-      opacity: 1;
-      pointer-events: auto;
+    .generate-button {
+      padding: 12px 20px;
+      background: #00a1e0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
     }
 
-    /* Footer */
+    .generate-button:hover {
+      background: #007bb5;
+    }
+
+    .gradient-preview {
+      margin-top: 2rem;
+      height: 150px;
+      border-radius: 12px;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .code-output {
+      margin-top: 1.5rem;
+      background: #f9f9f9;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
     footer {
-      position: fixed;
-      bottom: 12px;
-      width: 100%;
       text-align: center;
+      padding: 1rem;
       font-size: 0.9rem;
+      background: #f4f6f9;
       color: #666;
-      user-select: none;
-      font-weight: 500;
-      letter-spacing: 0.03em;
-    }
-
-    body.dark footer {
-      color: #aaa;
+      margin-top: auto;
     }
 
     footer a {
-      color: var(--primary);
+      color: #00a1e0;
       text-decoration: none;
-      font-weight: 700;
+      font-weight: bold;
     }
 
-    footer a:hover {
-      text-decoration: underline;
+    @media screen and (min-width: 600px) {
+      .color-picker-group {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      .color-input {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
-
   </style>
 </head>
 <body>
+
   <header>
-    <span class="emoji" aria-hidden="true">🎨</span>
-    3-Color Gradient Generator
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/62/Salesforce.com_logo.svg/2560px-Salesforce.com_logo.svg.png" alt="Salesforce Logo" />
+    <h1>3-Color Gradient Generator</h1>
   </header>
 
-  <main class="container" role="main">
+  <main>
     <section class="color-picker-group" aria-label="Select three colors for the gradient">
-      <input type="color" id="color1" value="#00aaff" aria-label="First color" />
-      <input type="color" id="color2" value="#ff00aa" aria-label="Second color" />
-      <input type="color" id="color3" value="#ffaa00" aria-label="Third color" />
+      <div class="color-input">
+        <label for="color1">Color 1</label>
+        <input type="color" id="color1" value="#00aaff" />
+        <input type="text" id="hex1" value="#00aaff" maxlength="7" />
+      </div>
+      <div class="color-input">
+        <label for="color2">Color 2</label>
+        <input type="color" id="color2" value="#ff00aa" />
+        <input type="text" id="hex2" value="#ff00aa" maxlength="7" />
+      </div>
+      <div class="color-input">
+        <label for="color3">Color 3</label>
+        <input type="color" id="color3" value="#ffaa00" />
+        <input type="text" id="hex3" value="#ffaa00" maxlength="7" />
+      </div>
     </section>
 
-    <button id="generateBtn" aria-describedby="generateDesc" aria-label="Generate gradients">
-      Generate Gradients
-    </button>
-    <p id="generateDesc" class="sr-only">Click to generate gradient variations with the selected colors.</p>
+    <button class="generate-button" onclick="generateGradient()">Generate Gradient</button>
 
-    <section id="gradients" aria-live="polite" aria-atomic="true" aria-relevant="additions"></section>
+    <div class="gradient-preview" id="gradientPreview"></div>
+
+    <div class="code-output" id="gradientCode"></div>
   </main>
 
-  <button id="darkToggle" aria-pressed="false" aria-label="Toggle dark mode">🌙 Dark Mode</button>
-
   <footer>
-    Built by <a href="https://github.com/KowshikKolvekar" target="_blank" rel="noopener noreferrer">Kowshik</a> with ❤️
+    Built by <a href="https://github.com/KowshikKolvekar" target="_blank">Kowshik</a> with ❤️<br/>
+    <span>#codeWithKowshik</span>
   </footer>
 
   <script>
-    const generateBtn = document.getElementById('generateBtn');
-    const gradientsContainer = document.getElementById('gradients');
     const color1 = document.getElementById('color1');
     const color2 = document.getElementById('color2');
     const color3 = document.getElementById('color3');
-    const darkToggle = document.getElementById('darkToggle');
-    const body = document.body;
+    const hex1 = document.getElementById('hex1');
+    const hex2 = document.getElementById('hex2');
+    const hex3 = document.getElementById('hex3');
 
-    const directions = ['to right', 'to bottom', '45deg', '135deg', 'to top right', 'to bottom left'];
-
-    function updateVariations() {
-      return [
-        [color1.value, color2.value, color3.value],
-        [color2.value, color3.value, color1.value],
-        [color3.value, color1.value, color2.value],
-        [color3.value, color2.value, color1.value]
-      ];
-    }
-
-    function generateGradients() {
-      const colorsVariations = updateVariations();
-      gradientsContainer.innerHTML = '';
-
-      colorsVariations.forEach(colors => {
-        directions.forEach(direction => {
-          const css = `linear-gradient(${direction}, ${colors[0]}, ${colors[1]}, ${colors[2]})`;
-          const box = document.createElement('div');
-          box.className = 'gradient-box';
-          box.style.background = css;
-
-          // CSS code block
-          const codeBlock = document.createElement('div');
-          codeBlock.className = 'gradient-code';
-          codeBlock.textContent = `background: ${css};`;
-          box.appendChild(codeBlock);
-
-          // Buttons container
-          const btnRow = document.createElement('div');
-          btnRow.className = 'buttons-row';
-
-          // Copy CSS button
-          const copyBtn = document.createElement('button');
-          copyBtn.className = 'copy-btn tooltip';
-          copyBtn.textContent = 'Copy CSS';
-          const tooltipSpan = document.createElement('span');
-          tooltipSpan.className = 'tooltiptext';
-          tooltipSpan.textContent = 'Click to copy CSS';
-          copyBtn.appendChild(tooltipSpan);
-
-          copyBtn.onclick = () => {
-            navigator.clipboard.writeText(`background: ${css};`).then(() => {
-              copyBtn.textContent = 'Copied!';
-              setTimeout(() => {
-                copyBtn.textContent = 'Copy CSS';
-                copyBtn.appendChild(tooltipSpan);
-              }, 1500);
-            });
-          };
-
-          // Download PNG button
-          const downloadBtn = document.createElement('button');
-          downloadBtn.className = 'download-btn tooltip';
-          downloadBtn.textContent = 'Download PNG';
-          const downloadTooltip = document.createElement('span');
-          downloadTooltip.className = 'tooltiptext';
-          downloadTooltip.textContent = 'Download gradient as image';
-          downloadBtn.appendChild(downloadTooltip);
-
-          downloadBtn.onclick = () => {
-            createGradientImage(css, 400, 150);
-          };
-
-          btnRow.appendChild(copyBtn);
-          btnRow.appendChild(downloadBtn);
-          box.appendChild(btnRow);
-
-          gradientsContainer.appendChild(box);
-        });
-      });
-    }
-
-    function createGradientImage(css, width, height) {
-      const canvas = document.createElement('canvas');
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext('2d');
-
-      const matches = css.match(/\(([^)]+)\)/);
-      if (!matches) return alert('Could not parse colors for image generation.');
-
-      const parts = matches[1].split(',');
-      if (parts.length < 4) return alert('Unexpected gradient format.');
-
-      const direction = parts[0].trim();
-      const colorStops = parts.slice(1).map(c => c.trim());
-
-      let x0, y0, x1, y1;
-
-      switch (direction) {
-        case 'to right':
-          x0 = 0; y0 = 0;
-          x1 = width; y1 = 0;
-          break;
-        case 'to bottom':
-          x0 = 0; y0 = 0;
-          x1 = 0; y1 = height;
-          break;
-        case '45deg':
-          x0 = 0; y0 = height;
-          x1 = width; y1 = 0;
-          break;
-        case '135deg':
-          x0 = 0; y0 = 0;
-          x1 = width; y1 = height;
-          break;
-        case 'to top right':
-          x0 = 0; y0 = height;
-          x1 = width; y1 = 0;
-          break;
-        case 'to bottom left':
-          x0 = width; y0 = 0;
-          x1 = 0; y1 = height;
-          break;
-        default:
-          x0 = 0; y0 = 0;
-          x1 = width; y1 = 0;
+    function syncColors(picker, hexField) {
+      if (picker.value !== hexField.value) {
+        if (picker === document.activeElement) {
+          hexField.value = picker.value;
+        } else if (hexField === document.activeElement && /^#([0-9a-fA-F]{6})$/.test(hexField.value)) {
+          picker.value = hexField.value;
+        }
       }
-
-      const gradient = ctx.createLinearGradient(x0, y0, x1, y1);
-      colorStops.forEach((color, i) => {
-        gradient.addColorStop(i / (colorStops.length - 1), color);
-      });
-
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, width, height);
-
-      const link = document.createElement('a');
-      link.download = 'gradient.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
     }
 
-    generateBtn.onclick = generateGradients;
+    [color1, hex1].forEach(el => el.addEventListener('input', () => syncColors(color1, hex1)));
+    [color2, hex2].forEach(el => el.addEventListener('input', () => syncColors(color2, hex2)));
+    [color3, hex3].forEach(el => el.addEventListener('input', () => syncColors(color3, hex3)));
 
-    darkToggle.onclick = () => {
-      body.classList.toggle('dark');
-      const isDark = body.classList.contains('dark');
-      darkToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
-      darkToggle.setAttribute('aria-pressed', isDark);
-    };
+    function generateGradient() {
+      const c1 = hex1.value;
+      const c2 = hex2.value;
+      const c3 = hex3.value;
+      const gradient = `linear-gradient(to right, ${c1}, ${c2}, ${c3})`;
+      document.getElementById('gradientPreview').style.background = gradient;
+      document.getElementById('gradientCode').textContent = `background: ${gradient};`;
+    }
 
-    window.onload = generateGradients;
+    window.onload = generateGradient;
   </script>
+
 </body>
 </html>
